@@ -1,6 +1,7 @@
 const nextBtn = document.getElementById("nextBtn");
 const questionText = document.getElementById("question");
-const optionsDiv = document.getElementById("options")
+const optionsDiv = document.getElementById("options");
+const scoreText = document.getElementById("score");
 
 const questions = [
     {
@@ -21,21 +22,50 @@ const questions = [
 ];
 
 let current = 0;
+let score = 0;
 
 function display() {
     optionsDiv.innerHTML = "";
+    let currentOpt = 0;
 
+    // Set the question text
     questionText.innerText = questions[current].question;
 
+    // Get options and answer
     const newOptions = questions[current].options;
-    newOptions.forEach(opt => {
+    const answer = questions[current].answer;
 
+    // Update score text
+    scoreText.textContent = `Score: ${score} / ${questions.length}`;
+
+    // Create buttons for each option
+    newOptions.forEach(opt => {
         const newBtn = document.createElement("button");
         optionsDiv.appendChild(newBtn);
         newBtn.textContent = opt;
+        newBtn.classList.add(currentOpt); // give it a class with its index
+
         newBtn.addEventListener("click", () => {
-            console.log("clicked");
+            const optionBtn = optionsDiv.querySelectorAll("button");
+
+            if (newBtn.classList.contains(answer)) {
+                // Correct choice
+                score++;
+                newBtn.classList.add("correct");
+            } else {
+                // Wrong choice
+                newBtn.classList.add("wrong");
+            }
+
+             // Disable all options
+            optionBtn.forEach(opt => (opt.disabled = true));
+
+            // Update score
+            scoreText.textContent = `Score: ${score} / ${questions.length}`;
+
         });
+
+        currentOpt++;
     });
 }
 
