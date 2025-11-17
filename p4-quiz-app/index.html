@@ -8,8 +8,8 @@
 </head>
 <body>
 
-    <div class="quiz-container">
-        <h2 id="question">Question text here...</h2>
+    <div id="quizContainer" class="quiz-container">
+        <h2 id="question">Click "Next" to start the Quiz</h2>
 
         <div id="options" class="options">
             <!-- Option buttons will be inserted here by JS -->
@@ -17,7 +17,13 @@
 
         <button id="nextBtn" class="next-btn">Next</button>
 
-        <div id="score" class="score"></div>
+        <div id="qNum" class="q-num"></div>
+    </div>
+
+    <div id="finalScore" class="final-score">
+        <h2>Quiz Completed!</h2>
+        <p id="finalScoreText">Your score: 0 / 0</p>
+        <button id="restart" class="restart">Restart Quiz</button>
     </div>
 
     <script src="script.js"></script>

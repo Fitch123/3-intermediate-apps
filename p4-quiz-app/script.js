@@ -1,7 +1,11 @@
 const nextBtn = document.getElementById("nextBtn");
 const questionText = document.getElementById("question");
 const optionsDiv = document.getElementById("options");
-const scoreText = document.getElementById("score");
+const qNum = document.getElementById("qNum");
+const quizContainer = document.getElementById("quizContainer");
+const finalScore = document.getElementById("finalScore");
+const finalScoreText = document.getElementById("finalScoreText");
+const restartBtn = document.getElementById("restart");
 
 const questions = [
     {
@@ -28,6 +32,9 @@ function display() {
     optionsDiv.innerHTML = "";
     let currentOpt = 0;
 
+    // Hide next Button
+    nextBtn.style.display = 'none';
+
     // Set the question text
     questionText.innerText = questions[current].question;
 
@@ -35,8 +42,7 @@ function display() {
     const newOptions = questions[current].options;
     const answer = questions[current].answer;
 
-    // Update score text
-    scoreText.textContent = `Score: ${score} / ${questions.length}`;
+    qNum.textContent = `Question #${current + 1}`
 
     // Create buttons for each option
     newOptions.forEach(opt => {
@@ -57,22 +63,51 @@ function display() {
                 newBtn.classList.add("wrong");
             }
 
-             // Disable all options
-            optionBtn.forEach(opt => (opt.disabled = true));
+            // Loop through each option
+            optionBtn.forEach(opt => {
+                // Disable all options
+                opt.disabled = true;
 
-            // Update score
-            scoreText.textContent = `Score: ${score} / ${questions.length}`;
+                // Highlight correct option
+                if (opt.classList.contains(answer) && !opt.classList.contains("correct")) {
+                    opt.classList.add("highlight");
+                }
+            });
 
+            //Show next button again
+            nextBtn.style.display = 'block';
         });
 
         currentOpt++;
     });
 }
 
-nextBtn.addEventListener("click", () => {
-    if (current < questions.length) {
+function helper() {
+     if (current < questions.length) {
         display();
         current++;
+    } else if (current === questions.length){
+        quizContainer.style.display = "none";
+        finalScore.style.display = "block";
+        finalScoreText.textContent = `Your score: ${score}/${questions.length}`;
     }
-    //current = (current + 1) % questions.length;
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+    helper();
 });
+
+nextBtn.addEventListener("click", () => {
+    helper();
+});
+
+restartBtn.addEventListener("click", () => {
+    current = 0;
+    score = 0;
+    helper();
+    quizContainer.style.display = "block";
+    finalScore.style.display = "none";
+});
+
+
+
